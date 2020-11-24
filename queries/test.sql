@@ -1,0 +1,1 @@
+Select cpu_time,database_id,deadlock_priority,endpoint_id from sys.dm_exec_sessions

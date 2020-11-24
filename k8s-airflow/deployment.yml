@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: newrelic-statsd
+  namespace: airflow
+  labels:
+    app: newrelic-statsd
+spec:
+  selector:
+    matchLabels:
+      app: newrelic-statsd
+  replicas: 2
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      labels:
+        app: newrelic-statsd
+    spec:
+      containers:
+      - name: newrelic-statsd
+        image: newrelic/nri-statsd:2.0.0
+        env:
+        - name: NR_ACCOUNT_ID
+          value: "2181713"
+        - name: NR_API_KEY
+          value: "INSIGHTS_INSERT_KEY"
+        - name: NR_EU_REGION
+          value: "true"

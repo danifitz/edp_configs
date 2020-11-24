@@ -1,0 +1,30 @@
+---
+integrations:
+  - name: nri-flex
+    interval: 60s
+    config:
+        name: wherescape-simplement
+        global:
+          custom-attributes:
+            environment: production
+        apis:
+          - name: wherescapeJobWarningState
+            shell: powershell
+            commands:
+              - run: "Invoke-Sqlcmd -InputFile \"C:/path/to/queries/1.1-job-warning.sql\" -ServerInstance $env:WHERESCAPE_SQL_SERVER_URL -Username $env:WHERESCAPE_SQL_SERVER_USER -Password $env:WHERESCAPE_SQL_SERVER_PWD | Select-Object * -ExcludeProperty ItemArray, Table, RowError, RowState, HasErrors | ConvertTo-Json"
+          - name: wherescapeJobLongRunning
+            shell: powershell
+            commands:
+              - run: "Invoke-Sqlcmd -InputFile \"C:/path/to/queries/1.2-long-running-job.sql\" -ServerInstance $env:WHERESCAPE_SQL_SERVER_URL -Username $env:WHERESCAPE_SQL_SERVER_USER -Password $env:WHERESCAPE_SQL_SERVER_PWD | Select-Object * -ExcludeProperty ItemArray, Table, RowError, RowState, HasErrors | ConvertTo-Json"
+          - name: wherescapeJobErrors
+            shell: powershell
+            commands:
+              - run: "Invoke-Sqlcmd -InputFile \"C:/path/to/queries/1.3-job-errors.sql\" -ServerInstance $env:WHERESCAPE_SQL_SERVER_URL -Username $env:WHERESCAPE_SQL_SERVER_USER -Password $env:WHERESCAPE_SQL_SERVER_PWD | Select-Object * -ExcludeProperty ItemArray, Table, RowError, RowState, HasErrors | ConvertTo-Json"
+          - name: simplementChannelIntegratedLatencyCheck
+            shell: powershell
+            commands:
+              - run: "Invoke-Sqlcmd -InputFile \"C:/path/to/queries/1.5-simplement-channel-integrated-latency-check.sql\" -ServerInstance $env:SIMPLEMENT_SQL_SERVER_URL -Username $env:SIMPLEMENT_SQL_SERVER_USER -Password $env:SIMPLEMENT_SQL_SERVER_PWD | Select-Object * -ExcludeProperty ItemArray, Table, RowError, RowState, HasErrors | ConvertTo-Json"
+          - name: simplementChannelCaptureLatencyCheck
+            shell: powershell
+            commands:
+              - run: "Invoke-Sqlcmd -InputFile \"C:/path/to/queries/1.6-simplement-channel-capture-latency-check.sql\" -ServerInstance $env:SIMPLEMENT_SQL_SERVER_URL -Username $env:SIMPLEMENT_SQL_SERVER_USER -Password $env:SIMPLEMENT_SQL_SERVER_PWD | Select-Object * -ExcludeProperty ItemArray, Table, RowError, RowState, HasErrors | ConvertTo-Json"
