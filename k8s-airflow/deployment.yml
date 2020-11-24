@@ -21,7 +21,7 @@ spec:
         image: newrelic/nri-statsd:2.0.0
         env:
         - name: NR_ACCOUNT_ID
-          value: "2181713"
+          value: "ACCOUNT_ID"
         - name: NR_API_KEY
           value: "INSIGHTS_INSERT_KEY"
         - name: NR_EU_REGION
