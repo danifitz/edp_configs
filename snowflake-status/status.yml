@@ -3,6 +3,9 @@
 
 # Query for any open incidents
 # FROM SnowflakeUnresolvedIncidents SELECT count(*) WHERE incidents IS NOT NULL
+
+# Query for any scheduled maintenance
+# FROM 
 ---
 integrations:
   - name: nri-flex
@@ -11,24 +14,31 @@ integrations:
       name: snowflake-statuspage
       global:
           base_url: https://94s7z8vpy1n8.statuspage.io/api/v2/
+          proxy: INSERT_PROXY_URL
       apis:
         - event_type: SnowflakeStatusSummary
           url: summary.json
           headers:
             accept: application/json
+          tls_config:
+            insecure_skip_verify: true
           start_key:
             - components
         - event_type: SnowflakeUnresolvedIncidents
           url: incidents/unresolved.json
           headers:
             accept: application/json
+          tls_config:
+            insecure_skip_verify: true
           # Start Key function does some post-processing on the JSON payload return from
           # status page API: https://github.com/newrelic/nri-flex/blob/master/docs/basics/functions.md#start_key
           start_key:
             - incidents
         - event_type: SnowflakeScheduledMaintenance
           url: scheduled-maintenances/upcoming.json
-          header:
+          headers:
             accept: application/json
+          tls_config:
+            insecure_skip_verify: true
           start_key:
             - scheduled_maintenances
